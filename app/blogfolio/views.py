@@ -3,4 +3,4 @@ from . import blogfolio
 
 @blogfolio.route('/')
 def index():
-    return "<b>hello world!</b>"
+    return render_template("index.html")

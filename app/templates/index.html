@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+{% block main %}
+
+      <main class="text-white mt-4 pt-3">
+         <div id="intro" class="view mb-5">
+            <div class="full-bg-img d-flex align-items-center justify-content-center">
+               <div class="mywelcome p-4 my-5 verticalcenter text-center rgba-black-strong">
+                  <h2 class="display-3 font-bold white-text mb-2">Siema</h2>
+                  <hr class="hr-light">
+                  <h4 class="white-text my-4">Jestem Kroolick i kodzę rzeczy w miejscach</h4>
+                  <button type="button" class="btn orange darken-2">Read more ziom<i class="fa fa-book ml-2"></i></button>
+               </div>
+            </div>
+         </div>
+         <div class="container">
+            <section id="strongpoints" class="text-center">
+               <h2 class="mb-4">Co tworzę?</h2>
+               <hr class="my-5">
+               <div class="row">
+                  <div class="col-md-4 mb-1">
+                     <img src="{{ url_for('static', filename='media/nginx-9.jpg') }}" width="200" class="img-fluid rounded-circle z-depth-1 mywelcome" alt="1">
+                     <h4 class="my-4 font-weight-bold">Backend</h4>
+                     <p class="text-justify">Samodzielnie tworzę rozwiązania od strony backendu, od setupu serwera wirtualnego do konfiguracji webservera. Lubie być zaangażowany w proces "od początku do końca", ale wiem, kiedy lepiej korzystać z gotowych, sprawdzonych rozwiązań.</p>
+                  </div>
+                  <div class="col-md-4 mb-1">
+                     <img src="{{ url_for('static', filename='media/Python-logo-notext.svg') }}" width="200" class="img-fluid rounded-circle z-depth-1 mywelcome" alt="1">
+                     <h4 class="my-4 font-weight-bold">Python</h4>
+                     <p class="text-justify">Używam Pythona tam, gdzie tylko mogę. Automatyzuje za jego pomocą powtarzalne zadania, ale potrafie też wykorzystać jego bardziej zaawansowane pakiety, jak Flask czy SQLalchemy.
+                     </p>
+                  </div>
+                  <div class="col-md-4 mb-1">
+                      <img src="{{ url_for('static', filename='media/zabbix_lrg.jpg') }}" width="200" class="img-fluid rounded-circle z-depth-1 mywelcome" alt="1">
+                     <h4 class="my-4 font-weight-bold">Monitoring i testy</h4>
+                     <p class="text-justify">Lubie wiedzieć, że moje projekty działają sprawnie i bez błędów. Dlatego zawsze staram się, by moje aplikacje były sensownie pokryte testami, a swoje usługi monitoruje na samodzielnie utworzonym monitoringu Zabbixa.
+                     </p>
+                  </div>
+               </div>
+            </section>
+            <hr class="my-5">
+            <section id="gallery">
+               <h2 class="mb-5 font-weight-bold text-center">My projects</h2>
+               <div class="row mywelcome elegant-color-dark p-3 mb-3 mt-3">
+                  <div class="col-md-6">
+                   <img src="{{ url_for('static', filename='media/wonsz.jpeg') }}" class="img-fluid z-depth-1 mywelcome" alt="1">
+                  </div>
+                  <div class="col-md-6">
+                     <!--Excerpt-->
+                     <div class="d-flex flex-row flex-wrap">
+                        <span class="badge amber darken-2 m-2">Python</span></h3>
+                        <span class="badge amber darken-2 m-2">HTML</span></h3>
+                        <span class="badge amber darken-2 m-2">CSS</span></h3>
+                     </div>
+                     <h4 class="mb-3"><strong>This website</strong></h4>
+                     <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime
+                        placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus et aut officiis
+                        debitis aut rerum.
+                     </p>
+                     <a class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read more</a>
+                  </div>
+               </div>
+               <div class="row mywelcome mdb-color darken-3 p-3">
+                  <div class="col-md-6">
+                     <!--Excerpt-->
+                     <div class="d-flex flex-row flex-wrap">
+                        <span class="badge teal darken-2 m-2">Python</span></h3>
+                        <span class="badge amber darken-2 m-2">openpyxl</span></h3>
+                     </div>
+                     <h4 class="mb-3"><strong>Pinger</strong></h4>
+                     <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime
+                        placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus et aut officiis
+                        debitis aut rerum.
+                     </p>
+                     <a class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read more</a>
+                  </div>
+                  <div class="col-md-6">
+                     <img src="{{ url_for('static', filename='media/wonsz.jpeg') }}" class="img-fluid z-depth-1 mywelcome" alt="1">
+                  </div>
+               </div>
+            </section>
+
+            <hr class="my-5">
+            <section id="contact">
+               <h2 class="mb-5 font-weight-bold text-center">Odezwij się</h2>
+               <div class="row justify-content-center">
+                  <div class="col-lg-5 col-md-12">
+                     <!-- Form contact -->
+                     <form class="p-5">
+                        <div class="md-form form-sm">
+                           <i class="fa fa-user prefix grey-text"></i>
+                           <input type="text" id="form3" class="form-control">
+                           <label for="form3">Your name</label>
+                        </div>
+                        <div class="md-form form-sm">
+                           <i class="fa fa-envelope prefix grey-text"></i>
+                           <input type="text" id="form2" class="form-control">
+                           <label for="form2">Your email</label>
+                        </div>
+                        <div class="md-form form-sm">
+                           <i class="fa fa-tag prefix grey-text"></i>
+                           <input type="text" id="form32" class="form-control">
+                           <label for="form34">Subject</label>
+                        </div>
+                        <div class="md-form form-sm">
+                           <i class="fa fa-pencil prefix grey-text"></i>
+                           <textarea type="text" id="form8" class="md-textarea" style="height: 100px"></textarea>
+                           <label for="form8">Your message</label>
+                        </div>
+                        <div class="text-center">
+                           <button class="btn orange darken-2">Wyślij <i class="fa fa-paper-plane-o ml-1"></i></button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </section>
+         </div>
+      </main>
+{% endblock %}
