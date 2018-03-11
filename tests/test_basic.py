@@ -1,7 +1,7 @@
 import unittest
 
 from flask import current_app
-from app import instantiate_app
+from app import instantiate_app, db
 
 class AppBasicTestCase(unittest.TestCase):
     """Tests proper app creation"""
@@ -10,8 +10,11 @@ class AppBasicTestCase(unittest.TestCase):
         self.app = instantiate_app('testing')
         self.app_context = self.app.app_context()
         self.app_context.push()
+        db.create_all()
 
     def tearDown(self):
+        db.session.remove()
+        db.drop_all()
         self.app_context.pop()
 
     def test_app_exists(self):
@@ -29,6 +32,6 @@ class PageRenderTestCase(unittest.TestCase):
         self.app = self.app.test_client()
 
 
-    def test_helloworld(self):
+    def test_porfolio_homepage(self):
         rv = self.app.get('/')
-        self.assertIn('hello world!', str(rv.data))
+        self.assertIn('<div class="invisible">fjfe95yskl1SDFA113</div>', str(rv.data))
