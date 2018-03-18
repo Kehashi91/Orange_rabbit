@@ -1,18 +1,29 @@
 from . import db
-from datetime import datetime
+from datetime import date
 
+
+metatags = db.Table('metatags',
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.tag_id'), primary_key=True),
+    db.Column('project_id', db.Integer, db.ForeignKey('portfolioprojects.project_id'), primary_key=True)
+)
 
 class PortfolioProject(db.Model):
     __tablename__ = "portfolioprojects"
-    id = db.Column(db.Integer, primary_key = True)
+    project_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), unique = True, nullable=False)
     description = db.Column(db.Text, nullable=False)
-    time_added = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    time_added = db.Column(db.Date, nullable=False, default=date.today())
+    tags = db.relationship('Tags', secondary=metatags, lazy='subquery',
+        backref=db.backref('portfolioprojects', lazy=True))
 
     def __repr__(self):
-        return '<Portfolioroject {!r}, description {!r}. time_added {!r}>'.format(self.title, self.name, self.time_added)
+        return '<portfolioprojects {!r}, description {!r}. time_added {!r}>'.format(self.name, self.description, self.time_added)
 
 class Tags(db.Model):
     __tablename = "tags"
-    id = db.Column(db.Integer, primary_key = True)
+    tag_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(32), unique = True)
+
+    def __repr__(self):
+        return '<tag {!r}>'.format(self.name)
+

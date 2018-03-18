@@ -1,0 +1,32 @@
+{% macro portfoliopost(project, oddevenflag) %}
+    <div class="row mywelcome elegant-color-dark p-3 m-3">
+        {% if oddevenflag %}
+ <div class="col-md-6">
+                   <img src="{{ url_for('static', filename='media/wonsz.jpeg') }}" class="img-fluid z-depth-1 mywelcome" alt="1">
+                  </div>
+        {% endif %}
+                  <div class="col-md-6">
+                     <!--Excerpt-->
+                     <div class="d-flex flex-row flex-wrap">
+                         {% for tag in project.tags %}
+                        <span class="badge amber darken-2 m-2">{{ tag.name }}</span></h3>
+                         {% endfor %}
+                     </div>
+                     <h4 class="mb-3"><strong>{{ project.name }}</strong></h4>
+                     <p>{{ project.description|safe }}
+                     </p>
+                     <p>{{ project.time_added }}</p>
+                     <a class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read more</a>
+                  </div>
+                {% if not oddevenflag %}
+ <div class="col-md-6">
+                   <img src="{{ url_for('static', filename='media/wonsz.jpeg') }}" class="img-fluid z-depth-1 mywelcome" alt="1">
+                  </div>
+        {% endif %}
+               </div>
+{% endmacro %}
+
+
+
+
+

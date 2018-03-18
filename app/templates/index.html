@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "macros.html" import portfoliopost, portfoliopostodd %}
 {% block main %}
 
       <main class="text-white mt-4 pt-3">
@@ -8,7 +9,7 @@
                <div class="mywelcome p-4 my-5 verticalcenter text-center rgba-black-strong">
                   <h2 class="display-3 font-bold white-text mb-2">Siema</h2>
                   <hr class="hr-light">
-                  <h4 class="white-text my-4">Jestem Kroolick i kodzę rzeczy w miejscach</h4>
+                  <h4 class="white-text my-4">Jestem Kroolick i kodzę rzeczy w miejscach, also</h4>
                   <button type="button" class="btn orange darken-2">Read more ziom<i class="fa fa-book ml-2"></i></button>
                </div>
             </div>
@@ -40,45 +41,9 @@
             <hr class="my-5">
             <section id="gallery">
                <h2 class="mb-5 font-weight-bold text-center">My projects</h2>
-               <div class="row mywelcome elegant-color-dark p-3 mb-3 mt-3">
-                  <div class="col-md-6">
-                   <img src="{{ url_for('static', filename='media/wonsz.jpeg') }}" class="img-fluid z-depth-1 mywelcome" alt="1">
-                  </div>
-                  <div class="col-md-6">
-                     <!--Excerpt-->
-                     <div class="d-flex flex-row flex-wrap">
-                        <span class="badge amber darken-2 m-2">Python</span></h3>
-                        <span class="badge amber darken-2 m-2">HTML</span></h3>
-                        <span class="badge amber darken-2 m-2">CSS</span></h3>
-                     </div>
-                     <h4 class="mb-3"><strong>This website</strong></h4>
-                     <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime
-                        placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus et aut officiis
-                        debitis aut rerum.
-                     </p>
-                     <a class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read more</a>
-                  </div>
-               </div>
-               <div class="row mywelcome mdb-color darken-3 p-3">
-                  <div class="col-md-6">
-                     <!--Excerpt-->
-                     <div class="d-flex flex-row flex-wrap">
-                        <span class="badge teal darken-2 m-2">Python</span></h3>
-                        <span class="badge amber darken-2 m-2">openpyxl</span></h3>
-                     </div>
-                     <h4 class="mb-3"><strong>Pinger</strong></h4>
-                     <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime
-                        placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus et aut officiis
-                        debitis aut rerum.
-                     </p>
-                     <a class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read more</a>
-                  </div>
-                  <div class="col-md-6">
-                     <img src="{{ url_for('static', filename='media/wonsz.jpeg') }}" class="img-fluid z-depth-1 mywelcome" alt="1">
-                  </div>
-               </div>
-            </section>
-
+     {% for post in projects %}
+               {{ loop.cycle(portfoliopost(post, oddevenflag = true), portfoliopost(post, oddevenflag = false)) }}
+               {% endfor %}
             <hr class="my-5">
             <section id="contact">
                <h2 class="mb-5 font-weight-bold text-center">Odezwij się</h2>
@@ -99,7 +64,7 @@
                         <div class="md-form form-sm">
                            <i class="fa fa-tag prefix grey-text"></i>
                            <input type="text" id="form32" class="form-control">
-                           <label for="form34">Subject</label>
+                           <label for="form3">Subject</label>
                         </div>
                         <div class="md-form form-sm">
                            <i class="fa fa-pencil prefix grey-text"></i>
