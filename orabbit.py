@@ -1,4 +1,5 @@
 import os
+from flask import render_template
 from app import instantiate_app, db
 from app.models import PortfolioProject, Tags
 from flask_migrate import Migrate
@@ -21,8 +22,14 @@ def test():
 
 @app.cli.command()
 def add_recort():
-    """Convenience command to add/modyfi records in dev DB."""
-    newpost = PortfolioProject(name="six", description="ojesu nie mam taguf")
-    db.session.add(newpost)
+    thetag1 = PortfolioProject.query.filter_by(name='six').first()
+    thetag1.image = "media/BigIcon.png"
+    thetag2 = PortfolioProject.query.filter_by(name='pionc').first()
+    thetag2.image = "media/ping.gif"
+    thetag3 = PortfolioProject.query.filter_by(name='czwarty!').first()
+    thetag3.image = "media/nginx-9.jpg"
     db.session.commit()
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404

@@ -2,7 +2,7 @@
     <div class="row mywelcome elegant-color-dark p-3 m-3">
         {% if oddevenflag %}
  <div class="col-md-6">
-                   <img src="{{ url_for('static', filename='media/wonsz.jpeg') }}" class="img-fluid z-depth-1 mywelcome" alt="1">
+                   <img src="static/{{ project.image }}" class="img-fluid z-depth-1 mywelcome" alt="1">
                   </div>
         {% endif %}
                   <div class="col-md-6">
@@ -16,11 +16,11 @@
                      <p>{{ project.description|safe }}
                      </p>
                      <p>{{ project.time_added }}</p>
-                     <a class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read more</a>
+                     <a href="/{{ project.name }}" class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read more</a>
                   </div>
                 {% if not oddevenflag %}
  <div class="col-md-6">
-                   <img src="{{ url_for('static', filename='media/wonsz.jpeg') }}" class="img-fluid z-depth-1 mywelcome" alt="1">
+                   <img src="static/{{ project.image }}" class="img-fluid z-depth-1 mywelcome" alt="1">
                   </div>
         {% endif %}
                </div>

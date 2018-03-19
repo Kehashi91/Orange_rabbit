@@ -10,9 +10,11 @@ metatags = db.Table('metatags',
 class PortfolioProject(db.Model):
     __tablename__ = "portfolioprojects"
     project_id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(64), unique = True, nullable=False)
+    name = db.Column(db.String(64), nullable=False)
     description = db.Column(db.Text, nullable=False)
+    image = db.Column(db.Text, nullable=False)
     time_added = db.Column(db.Date, nullable=False, default=date.today())
+    #subpage_html = db.columnn(db.Text)
     tags = db.relationship('Tags', secondary=metatags, lazy='subquery',
         backref=db.backref('portfolioprojects', lazy=True))
 

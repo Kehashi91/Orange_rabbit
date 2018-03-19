@@ -8,4 +8,3 @@ def index():
     projects = PortfolioProject.query.all()
     return render_template("index.html", projects=projects)
 
-
