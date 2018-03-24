@@ -22,9 +22,8 @@ def test():
 
 @app.cli.command()
 def add_record():
-    newpost = Post(name="pierwszy", description="No hej!", image="media/wonsz.jpeg", post_type="keks")
-    db.session.add(newpost)
-    db.session.commit()
+    uppost = Post.query.filter_by(name="pierwszy").first()
+    #newpost = Post(name="pierwszy", description="No hej!", image="media/wonsz.jpeg", post_type="keks")
     """thetag1 = PortfolioProject.query.filter_by(name='six').first()
     thetag1.image = "media/BigIcon.png"
     thetag2 = PortfolioProject.query.filter_by(name='pionc').first()

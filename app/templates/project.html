@@ -1,14 +1,35 @@
 {% extends "layout.html" %}
-{% from "macros.html" import portfoliopost %}
 {% block main %}
 
       <main class="text-white mt-5 pt-5">
-         <div class="container">
-            <section id="gallery">
-               <h2 class="mb-5 font-weight-bold text-center">My projects</h2>
-               {{ portfoliopost(project, oddevenflag = true) }}
-            <hr class="my-5">
+         <div class="container text-center">
+                                                   <h1 class="mb-3"><strong>{{ project.name }}</strong></h1>
+
+                   <img src="static/{{ project.image }}" class="img-fluid z-depth-1 mywelcome mt-2" width="600" alt="1">
+             <hr class="my-3 orange">
+                         <div class="d-flex flex-row flex-wrap justify-content-between">
+                             <div>
+                         {% for tag in project.tags %}
+                        <span class="badge amber darken-2 m-2">{{ tag.name }}</span>
+                         {% endfor %}
+                             </div>
+                             <span class="badge amber darken-2 m-2">Dodano: {{ project.time_added }}</span>
+                                               </div>
+
+
+             <strong>{{ project.description|safe }}</strong>
+             <div class="justify-content-center align-items-center">
+                                  <a href="https://github.com/Kehashi91//{{ project.name }}" class="btn btn-primary btn-md waves-effect waves-light btn-orange m-1 ">Zobacz projekt na Githubie</a>
          </div>
+             <hr class="my-3 orange">
+             {{ project.description_body|safe }}
+                     <p>{{ project.time_added }}</p>
+
+                 </div>
+
+
+
+
       </main>
 <div class="invisible">fjfe95yskl1SDFA113</div>
 {% endblock %}
