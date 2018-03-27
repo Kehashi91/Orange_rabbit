@@ -26,7 +26,21 @@
                </div>
 {% endmacro %}
 
+{% macro blogpost(post) %}
 
+          <div class="card mb-4 mdb-color elegant-color text-white">
+            <img class="card-img-top" src="static/{{ post.image }}" alt="Card image cap">
+            <div class="card-body">
+              <h2 class="card-title">{{ post.name }}</h2>
+              <p class="card-text">{{ post.description|safe }}</p>
+              <a href="#" class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read More &rarr;</a>
+            </div>
+            <div class="card-footer text-muted">
+              Posted on {{ post.time_added }}
+              <a href="#">Start Bootstrap</a>
+            </div>
+          </div>
 
+{% endmacro %}
 
 

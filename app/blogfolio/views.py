@@ -1,4 +1,5 @@
-from flask import render_template, current_app, abort
+from flask import render_template, request
+from flask_sqlalchemy import Pagination
 from . import blogfolio
 from .. import db
 from ..models import Post
@@ -15,4 +16,6 @@ def show_project(project):
 
 @blogfolio.route('/blog')
 def blog():
-    return render_template("blog.html")
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.paginate(page, 5, False)
+    return render_template("blog.html", posts=posts.items)

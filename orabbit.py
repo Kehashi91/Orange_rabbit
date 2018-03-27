@@ -22,14 +22,7 @@ def test():
 
 @app.cli.command()
 def add_record():
-    uppost = Post.query.filter_by(name="pierwszy").first()
-    #newpost = Post(name="pierwszy", description="No hej!", image="media/wonsz.jpeg", post_type="keks")
-    """thetag1 = PortfolioProject.query.filter_by(name='six').first()
-    thetag1.image = "media/BigIcon.png"
-    thetag2 = PortfolioProject.query.filter_by(name='pionc').first()
-    thetag2.image = "media/ping.gif"
-    thetag3 = PortfolioProject.query.filter_by(name='czwarty!').first()
-    thetag3.image = "media/nginx-9.jpg"""
+    pass
 
 @app.errorhandler(404)
 def page_not_found(e):
