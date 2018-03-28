@@ -17,5 +17,5 @@ def show_project(project):
 @blogfolio.route('/blog')
 def blog():
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.paginate(page, 5, False)
-    return render_template("blog.html", posts=posts.items)
+    posts = Post.query.paginate(page, 3, True)
+    return render_template("blog.html", posts=posts)

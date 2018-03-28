@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "macros.html" import blogpost %}
+{% from "macros.html" import blogpost, paginate %}
 {% block main %}
 
 <div class="container pt-5 text-white">
@@ -14,19 +14,13 @@
           </h1>
 
           <!-- Blog Post -->
-     {% for post in posts %}
+     {% for post in posts.items %}
                {{ blogpost(post) }}
                {% endfor %}
-
+<!--Pagination-->
+          {{ paginate(posts) }}
           <!-- Pagination -->
-          <ul class="pagination justify-content-center mb-4 mdb-color elegant-color text-white">
-            <li class="page-item">
-              <a class="page-link" href="#">&larr; Older</a>
-            </li>
-            <li class="page-item disabled">
-              <a class="page-link" href="#">Newer &rarr;</a>
-            </li>
-          </ul>
+
 
         </div>
 
