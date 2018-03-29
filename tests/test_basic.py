@@ -11,6 +11,7 @@ class AppBasicTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
+        self.app = self.app.test_client()
 
     def tearDown(self):
         db.session.remove()
@@ -23,15 +24,6 @@ class AppBasicTestCase(unittest.TestCase):
     def test_app_is_testing(self):
         self.assertTrue(current_app.config['TESTING'])
 
-
-class PageRenderTestCase(unittest.TestCase):
-    """Tests rendering of templates/pages"""
-
-    def setUp(self):
-        self.app = instantiate_app('testing')
-        self.app = self.app.test_client()
-
-
     def test_porfolio_homepage(self):
-        rv = self.app.get('/')
-        self.assertIn('<div class="invisible">fjfe95yskl1SDFA113</div>', str(rv.data))
+        template_to_test = self.app.get('/')
+        self.assertIn('<div class="invisible">fjfe95yskl1SDFA113</div>', str(template_to_test.data))

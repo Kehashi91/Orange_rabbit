@@ -37,7 +37,7 @@
             </div>
             <div class="card-footer text-muted">
               Posted on {{ post.time_added }}
-              <a href="#">Start Bootstrap</a>
+              <a href="{{ post.name|replace(" ", "-") }}">Start Bootstrap</a>
             </div>
           </div>
 

@@ -11,7 +11,10 @@ def index():
 
 @blogfolio.route('/<project>')
 def show_project(project):
-    project = Post.query.filter_by(name=project).first_or_404()
+    """ Includes workaround to avoid whitespace in url"""
+    project_unurlize = project.replace("-", " ")
+    project = Post.query.filter_by(name=project_unurlize).first_or_404()
+
     return render_template("project.html", project=project)
 
 @blogfolio.route('/blog')
