@@ -1,3 +1,5 @@
+"""Routes and urls for Porfolio and Blog"""
+
 from flask import render_template, request
 from flask_sqlalchemy import Pagination
 from . import blogfolio
