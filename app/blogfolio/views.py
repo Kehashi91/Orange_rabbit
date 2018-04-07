@@ -1,4 +1,4 @@
-"""Routes and urls for Porfolio and Blog"""
+"""Routes and view functions for Blog and portfolio"""
 
 from flask import render_template, request
 from flask_sqlalchemy import Pagination
@@ -13,7 +13,10 @@ def index():
 
 @blogfolio.route('/<project>')
 def show_project(project):
-    """ Includes workaround to avoid whitespace in url"""
+    """ Includes workaround to avoid whitespace in url.
+    The app will still accept whitespaces in url, but they can 
+    only appear if explicitly typed."""
+    
     project_unurlize = project.replace("-", " ")
     project = Post.query.filter_by(name=project_unurlize).first_or_404()
 
@@ -22,5 +25,5 @@ def show_project(project):
 @blogfolio.route('/blog')
 def blog():
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.paginate(page, 3, True)
+    posts = Post.query.paginate(page, 5, True)
     return render_template("blog.html", posts=posts)

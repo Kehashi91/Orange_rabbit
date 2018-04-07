@@ -1,3 +1,5 @@
+"""Configuration file for class-based flask configuration."""
+
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 

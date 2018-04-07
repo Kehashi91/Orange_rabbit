@@ -1,3 +1,5 @@
+"""blueprint initialization."""
+
 from flask import Blueprint
 
 blogfolio = Blueprint('blogfolio', __name__)

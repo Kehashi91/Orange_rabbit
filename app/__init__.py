@@ -1,3 +1,5 @@
+"""App initialization."""
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import config
