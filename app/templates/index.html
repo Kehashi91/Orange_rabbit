@@ -7,30 +7,31 @@
             <div class="full-bg-img d-flex align-items-center justify-content-center">
             	
                <div class="mywelcome p-4 my-5 verticalcenter text-center rgba-black-strong">
-                  <h2 class="display-3 font-bold white-text mb-2">Siema</h2>
+                  <h3 class="display-3 mb-2"><strong>Witaj!</strong></h3>
                   <hr class="hr-light">
-                  <h4 class="white-text my-4">Jestem Kroolick i kodzę rzeczy w miejscach, also</h4>
-                  <button type="button" class="btn orange darken-2">Read more ziom<i class="fa fa-book ml-2"></i></button>
+                  <h5><strong>Jestem Adam, uwielbiam programować oraz zagłębiać się w szeroko pojęty świat IT.</strong></h5>
+                  <h5><strong>To mój prywatny kąt w Internecie, w którym możesz zapoznać się ze mną i moją twórczością.</strong></h5>
+                  <a href="{{ url_for('blogfolio.blog') }}" class="btn orange darken-2"><strong>Przejdź do bloga</strong></a>
+                 <a href="#strongpoints" class="btn orange darken-2"><strong>Dowiedz się więcej</strong></a>
                </div>
             </div>
          </div>
          <div class="container">
             <section id="strongpoints" class="text-center">
-               <h2 class="mb-4">Co tworzę?</h2>
                <hr class="my-5">
                <div class="row">
-                  <div class="col-md-4 mb-1">
+                  <div class="col-md-4">
                      <img src="{{ url_for('static', filename='media/nginx-9.jpg') }}" width="200" class="img-fluid rounded-circle z-depth-1 mywelcome" alt="1">
                      <h4 class="my-4 font-weight-bold">Backend</h4>
                      <p class="text-justify">Samodzielnie tworzę rozwiązania od strony backendu, od setupu serwera wirtualnego do konfiguracji webservera. Lubie być zaangażowany w proces "od początku do końca", ale wiem, kiedy lepiej korzystać z gotowych, sprawdzonych rozwiązań.</p>
                   </div>
-                  <div class="col-md-4 mb-1">
+                  <div class="col-md-4">
                      <img src="{{ url_for('static', filename='media/Python-logo-notext.svg') }}" width="200" class="img-fluid rounded-circle z-depth-1 mywelcome" alt="1">
                      <h4 class="my-4 font-weight-bold">Python</h4>
                      <p class="text-justify">Używam Pythona tam, gdzie tylko mogę. Automatyzuje za jego pomocą powtarzalne zadania, ale potrafie też wykorzystać jego bardziej zaawansowane pakiety, jak Flask czy SQLalchemy.
                      </p>
                   </div>
-                  <div class="col-md-4 mb-1">
+                  <div class="col-md-4">
                       <img src="{{ url_for('static', filename='media/zabbix_lrg.jpg') }}" width="200" class="img-fluid rounded-circle z-depth-1 mywelcome" alt="1">
                      <h4 class="my-4 font-weight-bold">Monitoring i testy</h4>
                      <p class="text-justify">Lubie wiedzieć, że moje projekty działają sprawnie i bez błędów. Dlatego zawsze staram się, by moje aplikacje były sensownie pokryte testami, a swoje usługi monitoruje na samodzielnie utworzonym monitoringu Zabbixa.
@@ -40,36 +41,30 @@
             </section>
             <hr class="my-5">
             <section id="gallery">
-               <h2 class="mb-5 font-weight-bold text-center">My projects</h2>
+               <h2 class="mb-5 font-weight-bold text-center">Moje Projekty</h2>
      {% for post in projects %}
                {{ loop.cycle(portfoliopost(post, oddevenflag = true), portfoliopost(post, oddevenflag = false)) }}
                {% endfor %}
             <hr class="my-5">
             <section id="contact">
-               <h2 class="mb-5 font-weight-bold text-center">Odezwij się</h2>
+               <h3 class=" font-weight-bold text-center">Napisz do mnie</h3>
                <div class="row justify-content-center">
                   <div class="col-lg-5 col-md-12">
-                     <!-- Form contact -->
                      <form class="p-5">
                         <div class="md-form form-sm">
                            <i class="fa fa-user prefix grey-text"></i>
                            <input type="text" id="form3" class="form-control">
-                           <label for="form3">Your name</label>
+                           <label for="form3">Twoje imię</label>
                         </div>
                         <div class="md-form form-sm">
                            <i class="fa fa-envelope prefix grey-text"></i>
                            <input type="text" id="form2" class="form-control">
-                           <label for="form2">Your email</label>
-                        </div>
-                        <div class="md-form form-sm">
-                           <i class="fa fa-tag prefix grey-text"></i>
-                           <input type="text" id="form32" class="form-control">
-                           <label for="form3">Subject</label>
+                           <label for="form2">Twój mail</label>
                         </div>
                         <div class="md-form form-sm">
                            <i class="fa fa-pencil prefix grey-text"></i>
                            <textarea type="text" id="form8" class="md-textarea" style="height: 100px"></textarea>
-                           <label for="form8">Your message</label>
+                           <label for="form8">Twoja wiadomość</label>
                         </div>
                         <div class="text-center">
                            <button class="btn orange darken-2">Wyślij <i class="fa fa-paper-plane-o ml-1"></i></button>

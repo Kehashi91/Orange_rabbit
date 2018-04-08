@@ -6,7 +6,6 @@
                   </div>
         {% endif %}
                   <div class="col-md-6">
-                     <!--Excerpt-->
                      <div class="d-flex flex-row flex-wrap">
                          {% for tag in project.tags %}
                         <span class="badge amber darken-2 m-2">{{ tag.name }}</span></h3>
@@ -16,7 +15,7 @@
                      <p>{{ project.description|safe }}
                      </p>
                      <p>{{ project.time_added }}</p>
-                     <a href="/{{ project.name }}" class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read more</a>
+                      <a href="/{{ project.name|replace(" ", "-") }}" class="btn btn-primary btn-md waves-effect waves-light btn-orange"><strong>Czytaj dalej</strong></a>
                   </div>
                 {% if not oddevenflag %}
  <div class="col-md-6">
@@ -27,20 +26,27 @@
 {% endmacro %}
 
 {% macro blogpost(post) %}
+    <div class="row mywelcome elegant-color-dark p-3 m-3">
+                  <div class="col">
+                     <h4><strong>{{ post.name }}</strong></h4>
+                                           <div class="d-flex flex-row flex-wrap">
+                         {% for tag in post.tags %}
+                        <span class="badge amber darken-2 mr-2">{{ tag.name }}</span></h3>
 
-          <div class="card mb-4 mdb-color elegant-color text-white">
-            <img class="card-img-top" src="static/{{ post.image }}" alt="Card image cap">
-            <div class="card-body">
-              <h2 class="card-title">{{ post.name }}</h2>
-              <p class="card-text">{{ post.description|safe }}</p>
-              <a href="#" class="btn btn-primary btn-md waves-effect waves-light btn-orange">Read More &rarr;</a>
-            </div>
-            <div class="card-footer text-muted">
-              Posted on {{ post.time_added }}
-              <a href="{{ post.name|replace(" ", "-") }}">Start Bootstrap</a>
-            </div>
-          </div>
+                         {% endfor %}
+                                           </div>
 
+                                    <hr class="my-3 orange">
+                     <p>{{ post.description|safe }}
+                     </p>
+                     <p>{{ post.time_added }}</p>
+                                                                 <div class="d-flex flex-row justify-content-between align-items-center">
+                      <a href="/{{ post.name|replace(" ", "-") }}" class="btn btn-primary btn-md waves-effect waves-light btn-orange"><strong>Czytaj dalej</strong></a>
+                                                                     <p class="m-0 p-0"><strong>Dodano: {{ post.time_added }}</strong></p>
+                                                                 </div>
+                  </div>
+
+               </div>
 {% endmacro %}
 
 {% macro paginate(pagination) %}
