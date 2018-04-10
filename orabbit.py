@@ -35,9 +35,12 @@ def make_shell_context():
 @app.cli.command()
 def test():
     """Run the unit tests."""
-    import unittest
-    tests = unittest.TestLoader().discover('tests')
-    unittest.TextTestRunner(verbosity=2).run(tests)
+    if app.config["TESTING"] == True:
+        import unittest
+        tests = unittest.TestLoader().discover('tests')
+        unittest.TextTestRunner(verbosity=2).run(tests)
+    else:
+        raise KeyError("Wrong app configuration: FLASK_CONFIG must be 'testing'")
 
 @app.cli.command()
 def add_record():
