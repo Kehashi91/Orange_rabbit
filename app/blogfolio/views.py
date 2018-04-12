@@ -27,3 +27,8 @@ def blog():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.filter_by(post_type="blogpost").paginate(page, 5, True)
     return render_template("blog.html", posts=posts)
+
+@blogfolio.route('/search')
+def search():
+    search_query = request.args.get('search', 'nothing')
+    return render_template("search.html", search=search_query)

@@ -22,7 +22,7 @@ class AppBasicTestCase(unittest.TestCase):
         db.session.add(test_post_1)
         db.session.commit()
 
-        for current_iteration in range(2, 10):
+        for current_iteration in range(1, 10):
             test_pagination_post = Post(name="test post {}".format(current_iteration), description="",
                                description_body="", image="",
                                post_type="blogpost")

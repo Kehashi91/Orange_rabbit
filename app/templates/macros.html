@@ -10,12 +10,16 @@
                          {% for tag in project.tags %}
                         <span class="badge amber darken-2 m-2">{{ tag.name }}</span></h3>
                          {% endfor %}
-                     </div>
-                     <h4 class="mb-3"><strong>{{ project.name }}</strong></h4>
+
+
+                                              </div>
+                                               <h4 class="mb-3"><strong>{{ project.name }}</strong></h4>
+                                                          <hr class="my-3 orange">
                      <p>{{ project.description|safe|truncate()  }}
-                     </p>
-                     <p>{{ project.time_added }}</p>
+                                                                 <div class="d-flex flex-row justify-content-between align-items-center">
                       <a href="/{{ project.name|replace(" ", "-") }}" class="btn btn-primary btn-md waves-effect waves-light btn-orange"><strong>Czytaj dalej</strong></a>
+                                                                     <p class="m-0 p-0"><strong>Dodano: {{ project.time_added }}</strong></p>
+                                                                 </div>
                   </div>
                 {% if not oddevenflag %}
  <div class="col-md-6">
@@ -39,7 +43,6 @@
                                     <hr class="my-3 orange">
                      <p>{{ post.description|safe|truncate() }}
                      </p>
-                     <p>{{ post.time_added }}</p>
                                                                  <div class="d-flex flex-row justify-content-between align-items-center">
                       <a href="/{{ post.name|replace(" ", "-") }}" class="btn btn-primary btn-md waves-effect waves-light btn-orange"><strong>Czytaj dalej</strong></a>
                                                                      <p class="m-0 p-0"><strong>Dodano: {{ post.time_added }}</strong></p>
