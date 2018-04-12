@@ -1,37 +1,32 @@
-         {% extends "layout.html" %}
-{% from "macros.html" import portfoliopost %}
+{% from "macros.html" import blogpost, paginate %}
+{% extends "layout.html" %}
 {% block main %}
-          <div class="card my-4 mdb-color elegant-color text-white">
-            <h5 class="card-header">Tagi</h5>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <li>
-              <p> {{ search }} </p>
-                    </li>
-                    <li>
-                      <a href="#">HTML</a>
-                    </li>
-                    <li>
-                      <a href="#">Freebies</a>
-                    </li>
-                  </ul>
+<div class="container pt-5 text-white justify-content-md-center">
+
+      <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col">
+
+          <h2 class="my-4 text-center">Blog
+          </h2>
+
+          <!-- Blog Post -->
+                         <hr class="my-3 orange">
+
+
+
+              <p> {{ query }} </p>
+                             {% for result in results.items %}
+               {{ blogpost(result) }}
+               {% endfor %}
+<!--Pagination-->
+          {{ paginate(results) }}
                 </div>
-                <div class="col-lg-6">
-                  <ul class="list-unstyled mb-0">
-                    <li>
-                      <a href="#">JavaScript</a>
-                    </li>
-                    <li>
-                      <a href="#">CSS</a>
-                    </li>
-                    <li>
-                      <a href="#">Tutorials</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
          {% endblock %}

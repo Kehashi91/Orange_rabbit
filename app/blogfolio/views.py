@@ -1,7 +1,8 @@
 """Routes and view functions for Blog and portfolio"""
 
-from flask import render_template, request
+from flask import render_template, request, abort
 from flask_sqlalchemy import Pagination
+from sqlalchemy import or_, func
 from . import blogfolio
 from .. import db
 from ..models import Post
@@ -30,5 +31,12 @@ def blog():
 
 @blogfolio.route('/search')
 def search():
-    search_query = request.args.get('search', 'nothing')
-    return render_template("search.html", search=search_query)
+    page = request.args.get('page', 1, type=int)
+    search_query = request.args.get('query')
+    if not search_query:
+        abort(404)
+    else:
+        results = Post.query.filter(or_(func.lower(Post.name).like(('%' + search_query + '%').lower()),
+                                        Post.tags.any(name=search_query)))
+        results = results.paginate(page, 5, True)
+        return render_template("search.html", query=search_query, results=results)
