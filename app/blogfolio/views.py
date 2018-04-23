@@ -28,7 +28,6 @@ def blog():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.filter_by(post_type="blogpost").paginate(page, 5, True)
     tags = Tags.query.all()
-    print(type(tags))
     tags_half_1 = tags[int(len(tags)/2):]
     tags_half_2 = tags[:int(len(tags)/2)]
 
