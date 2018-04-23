@@ -24,9 +24,15 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = "postgresql://orabbits:{}@localhost/orabbits_test".format(Config.DB_PASS)
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 
+class ProductionConfig(Config):
+    PRODUCTION = True
+    SQLALCHEMY_DATABASE_URI = "postgresql://orabbits:{}@localhost/orabbits_prod".format(Config.DB_PASS)
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+
 
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
-    'default': DevelopmentConfig
+    'default': DevelopmentConfig,
+    'production': ProductionConfig
 }
