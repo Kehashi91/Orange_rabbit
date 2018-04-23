@@ -5,7 +5,7 @@ from flask_sqlalchemy import Pagination
 from sqlalchemy import or_, func
 from . import blogfolio
 from .. import db
-from ..models import Post
+from ..models import Post, Tags
 
 @blogfolio.route('/')
 def index():
@@ -27,12 +27,18 @@ def show_project(project):
 def blog():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.filter_by(post_type="blogpost").paginate(page, 5, True)
-    return render_template("blog.html", posts=posts)
+    tags = Tags.query.all()
+    print(type(tags))
+    tags_half_1 = tags[int(len(tags)/2):]
+    tags_half_2 = tags[:int(len(tags)/2)]
+
+    return render_template("blog.html", posts=posts, tags1=tags_half_1, tags2=tags_half_2)
 
 @blogfolio.route('/search')
 def search():
     page = request.args.get('page', 1, type=int)
     search_query = request.args.get('query')
+
     if not search_query:
         abort(404)
     else:

@@ -25,37 +25,29 @@
         </div>
 
         <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
+        <div class="col-md-4 mt-5">
 
           <!-- Categories Widget -->
-          <div class="card my-4 mdb-color elegant-color text-white">
+          <div class="card my-4 elegant-color-dark text-white">
             <h5 class="card-header">Tagi</h5>
             <div class="card-body">
               <div class="row">
                 <div class="col-lg-6">
                   <ul class="list-unstyled mb-0">
+                      {% for tag in tags1 %}
                     <li>
-                      <a href="#">Web Design</a>
+                      <a href="#">{{ tag.name }}</a>
                     </li>
-                    <li>
-                      <a href="#">HTML</a>
-                    </li>
-                    <li>
-                      <a href="#">Freebies</a>
-                    </li>
+                      {% endfor %}
                   </ul>
                 </div>
                 <div class="col-lg-6">
                   <ul class="list-unstyled mb-0">
+                    {% for tag in tags2 %}
                     <li>
-                      <a href="#">JavaScript</a>
+                      <a href="search?query={{ tag.name }}">{{ tag.name }}</a>
                     </li>
-                    <li>
-                      <a href="#">CSS</a>
-                    </li>
-                    <li>
-                      <a href="#">Tutorials</a>
-                    </li>
+                      {% endfor %}
                   </ul>
                 </div>
               </div>
