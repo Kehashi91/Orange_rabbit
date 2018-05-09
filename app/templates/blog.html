@@ -36,7 +36,7 @@
                   <ul class="list-unstyled mb-0">
                       {% for tag in tags1 %}
                     <li>
-                      <a href="#">{{ tag.name }}</a>
+                      <a href="search?query={{ tag.name }}">{{ tag.name }}</a>
                     </li>
                       {% endfor %}
                   </ul>

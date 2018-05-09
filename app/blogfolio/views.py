@@ -43,5 +43,7 @@ def search():
     else:
         results = Post.query.filter(or_(func.lower(Post.name).like(('%' + search_query + '%').lower()),
                                         Post.tags.any(name=search_query)))
-        results = results.paginate(page, 5, True)
-        return render_template("search.html", query=search_query, results=results)
+        results_count = results.count()
+        results_paginate = results.paginate(page, 5, True)
+
+        return render_template("search.html", query=search_query, results=results_paginate, count=results_count)

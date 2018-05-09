@@ -45,12 +45,7 @@ def test():
 @app.cli.command()
 def add_record():
     """Convenience method for adding/modyfing database entries durgin development"""
-    test_tag_1 = Tags.query.filter_by(name="Python").first()
-    test_tag_2 = Tags.query.filter_by(name="CSS").first()
-    test_tag_3 = Tags.query.filter_by(name="HTML").first()
-    test_post_1 = Post.query.filter_by(name="Post nr 0").first()
-
-    test_post_1.tags = [test_tag_1, test_tag_2, test_tag_3]
+    db.create_all()
 
 @app.errorhandler(404)
 def page_not_found(e):

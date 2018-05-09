@@ -31,7 +31,7 @@ class Post(db.Model):
     def validate_post_type(self, key, post_type):
         """Although it could be boolean value since we have only 2 values, i do not rule out adding diffrent post types
         in the future, so i build a custom validator."""
-        post_types_reference = {"project", "blogpost"}
+        post_types_reference = {'project', 'blogpost'}
         if post_type in post_types_reference:
             return post_type
         else:
@@ -49,7 +49,7 @@ class Post(db.Model):
 
 
 class Tags(db.Model):
-    __tablename = "tags"
+    __tablename__ = 'tags'
     tag_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(32), unique = True)
 
@@ -57,4 +57,12 @@ class Tags(db.Model):
     def __repr__(self):
         return '<tag {!r}>'.format(self.name)
 
+class Timer(db.Model):
+    __tablename__ = 'timer'
 
+    entry_id = db.Column(db.Integer, primary_key = True)
+    entry_starttime = db.Column(db.DateTime, nullable=False)
+    entry_totaltime = db.Column(db.Interval, nullable=False)
+
+    def __repr__(self):
+        return '<timer/timer startime {!r}, totaltime {!r}'.format(self.entry_starttime, self.entry_totaltime)

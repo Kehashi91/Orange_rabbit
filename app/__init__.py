@@ -15,7 +15,10 @@ def instantiate_app(config_name):
 
 
     from .blogfolio import blogfolio as blogfolio_blueprint
+    from .timer import timer as timer_blueprint
+
     app.register_blueprint(blogfolio_blueprint)
+    app.register_blueprint(timer_blueprint, url_prefix='/timer')
 
     return app
 
