@@ -1,10 +1,11 @@
 """Database models and definitions."""
 
 from . import db
-from datetime import date
+from datetime import datetime, date
 from flask_sqlalchemy import BaseQuery
-from sqlalchemy import func
+from sqlalchemy import func, extract
 from sqlalchemy.orm import validates
+
 
 
 #association table for many-to-many relationship for tags
@@ -63,6 +64,17 @@ class Timer(db.Model):
     entry_id = db.Column(db.Integer, primary_key = True)
     entry_starttime = db.Column(db.DateTime, nullable=False)
     entry_totaltime = db.Column(db.Interval, nullable=False)
+
+    @classmethod
+    def entry_starttime_setter(cls, starttime, totaltime):
+        dbcheck = Timer.query.filter(extract('day', Timer.entry_starttime) == starttime.day).first()
+
+        if dbcheck:
+            dbentrytime = dbcheck.entry_totaltime + totaltime
+            dbcheck.entry_totaltime = dbentrytime
+        else:
+            starttimedb = Timer(entry_starttime=starttime, entry_totaltime=totaltime)
+            db.session.add(starttimedb)
 
     def __repr__(self):
         return '<timer/timer startime {!r}, totaltime {!r}'.format(self.entry_starttime, self.entry_totaltime)

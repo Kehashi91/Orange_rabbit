@@ -1,7 +1,8 @@
 """Routes and view functions for timer app and API"""
 
 from flask import request, jsonify, abort, render_template
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from sqlalchemy import extract
 from . import timer
 from .. import db
 from ..models import Timer
@@ -20,9 +21,7 @@ def post_time():
     totaltime_todatetime = datetime.strptime(totaltime, "%H:%M:%S.%f")
     delta = timedelta(hours=totaltime_todatetime.hour, minutes=totaltime_todatetime.minute, seconds=totaltime_todatetime.second)
 
-    starttimedb = Timer(entry_starttime=starttime, entry_totaltime = delta)
-
-    db.session.add(starttimedb)
+    Timer.entry_starttime_setter(starttime, delta)
 
     timer_data_point = {
         "start_time": request.json["start_time"],
@@ -35,11 +34,19 @@ def post_time():
 def get_time():
 
     totaltime = timedelta()
+    yesterday = datetime.today() - timedelta(days=1)
 
-    all_times = Timer.query.all()
+
+    all_times = Timer.query.filter(yesterday < Timer.entry_starttime).all()
 
     for time in all_times:
         totaltime += time.entry_totaltime
+
+    rv = {}
+    for time in all_times:
+        daily_total = timedelta()
+
+
 
     return str(totaltime)
 
@@ -49,3 +56,16 @@ def runtime_test():
         abort(400)
     else:
         return "", 201
+
+
+"""
+    dbcheck = Timer.query.filter(extract('day', Timer.entry_starttime) == starttime.day).first()
+
+    if dbcheck:
+        dbentrytime = dbcheck.entry_totaltime + delta
+        dbcheck.entry_totaltime = dbentrytime
+    else:
+        starttimedb = Timer(entry_starttime=starttime, entry_totaltime=delta)
+        db.session.add(starttimedb)
+
+"""
