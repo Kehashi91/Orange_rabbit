@@ -6,6 +6,7 @@ from sqlalchemy import extract
 from . import timer
 from .. import db
 from ..models import Timer
+from ..plot import ploter
 
 
 @timer.route('/v0.1/posttime', methods=["POST"])
@@ -49,6 +50,13 @@ def get_time():
 
 
     return str(totaltime)
+
+@timer.route('/v0.1/getgraph', methods=["GET"])
+def get_graph():
+    ploter.plot()
+    return "yiis", 201
+
+
 
 @timer.route('/v0.1/runtime_test', methods=["GET", "POST"])
 def runtime_test():
