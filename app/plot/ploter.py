@@ -2,7 +2,7 @@ import matplotlib.pyplot as ploter
 import matplotlib.dates
 import matplotlib.style as mplstyle
 from datetime import timedelta, datetime
-from ..models import Timer
+from ..models import Timer_entries
 
 def plot(days = 30):
     mplstyle.use(['ggplot'])

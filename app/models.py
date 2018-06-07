@@ -1,9 +1,9 @@
 """Database models and definitions."""
 
 from . import db
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from flask_sqlalchemy import BaseQuery
-from sqlalchemy import func, extract
+from sqlalchemy import func, extract, event
 from sqlalchemy.orm import validates
 
 
@@ -58,23 +58,37 @@ class Tags(db.Model):
     def __repr__(self):
         return '<tag {!r}>'.format(self.name)
 
-class Timer(db.Model):
-    __tablename__ = 'timer'
+class Timer_entries(db.Model):
+    __tablename__ = 'timer_entries'
 
-    entry_id = db.Column(db.Integer, primary_key = True)
-    entry_starttime = db.Column(db.DateTime, nullable=False)
-    entry_totaltime = db.Column(db.Interval, nullable=False)
+    id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.Integer, db.ForeignKey('timer_summary.id'), nullable=False)
+    starttime = db.Column(db.DateTime, nullable=False)
+    totaltime = db.Column(db.Interval, nullable=False)
 
     @classmethod
-    def entry_starttime_setter(cls, starttime, totaltime):
-        dbcheck = Timer.query.filter(extract('day', Timer.entry_starttime) == starttime.day).first()
+    def entry_starttime_setter(cls, starttime, totaltime, username="main"):
+        dbcheck = Timer_entries.query.filter(extract('day', Timer_entries.starttime) == starttime.day).first()
+        username_to_pass = Timer_summary.query.filter_by(username=username).first()
 
         if dbcheck:
-            dbentrytime = dbcheck.entry_totaltime + totaltime
-            dbcheck.entry_totaltime = dbentrytime
+            dbentrytime = dbcheck.totaltime + totaltime
+            dbcheck.totaltime = dbentrytime
         else:
-            starttimedb = Timer(entry_starttime=starttime, entry_totaltime=totaltime)
+            starttimedb = Timer_entries(starttime=starttime, totaltime=totaltime, username=username_to_pass.id)
             db.session.add(starttimedb)
+        totaltimes = [x.totaltime for x in username_to_pass.entries]
+        avg = sum(totaltimes, timedelta()) / len(totaltimes)
+        print(avg)
 
     def __repr__(self):
-        return '<timer/timer startime {!r}, totaltime {!r}'.format(self.entry_starttime, self.entry_totaltime)
+        return '<timer/timer startime {!r}, totaltime {!r}'.format(self.starttime, self.totaltime)
+
+class Timer_summary(db.Model):
+    __tablename__ = 'timer_summary'
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), nullable=False)
+    entries = db.relationship('Timer_entries', backref='timer_summary', lazy=True)
+    total_time = db.Column(db.Float)
+    daily_average = db.Column(db.Float)

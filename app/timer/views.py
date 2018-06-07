@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, date
 from sqlalchemy import extract
 from . import timer
 from .. import db
-from ..models import Timer
+from ..models import Timer_entries
 from ..plot import ploter
 
 
@@ -22,7 +22,7 @@ def post_time():
     totaltime_todatetime = datetime.strptime(totaltime, "%H:%M:%S.%f")
     delta = timedelta(hours=totaltime_todatetime.hour, minutes=totaltime_todatetime.minute, seconds=totaltime_todatetime.second)
 
-    Timer.entry_starttime_setter(starttime, delta)
+    Timer_entries.entry_starttime_setter(starttime, delta)
 
     timer_data_point = {
         "start_time": request.json["start_time"],
@@ -34,22 +34,20 @@ def post_time():
 @timer.route('/v0.1/gettime', methods=["GET"])
 def get_time():
 
+    days_range = request.args.get('days', None, type=int)
+
     totaltime = timedelta()
-    yesterday = datetime.today() - timedelta(days=1)
 
-
-    all_times = Timer.query.filter(yesterday < Timer.entry_starttime).all()
+    if days_range:
+        yesterday = datetime.today() - timedelta(days=days_range)
+        all_times = Timer_entries.query.filter(yesterday < Timer_entries.entry_starttime).all()
+    else:
+        all_times = Timer_entries.query.all()
 
     for time in all_times:
         totaltime += time.entry_totaltime
 
-    rv = {}
-    for time in all_times:
-        daily_total = timedelta()
-
-
-
-    return str(totaltime)
+    return str(totaltime), 201
 
 @timer.route('/v0.1/getgraph', methods=["GET"])
 def get_graph():
