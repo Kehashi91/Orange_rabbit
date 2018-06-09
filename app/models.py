@@ -77,9 +77,7 @@ class Timer_entries(db.Model):
         else:
             starttimedb = Timer_entries(starttime=starttime, totaltime=totaltime, username=username_to_pass.id)
             db.session.add(starttimedb)
-        totaltimes = [x.totaltime for x in username_to_pass.entries]
-        avg = sum(totaltimes, timedelta()) / len(totaltimes)
-        print(avg)
+        Timer_summary.new_entry_update(username_to_pass)
 
     def __repr__(self):
         return '<timer/timer startime {!r}, totaltime {!r}'.format(self.starttime, self.totaltime)
@@ -90,5 +88,13 @@ class Timer_summary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), nullable=False)
     entries = db.relationship('Timer_entries', backref='timer_summary', lazy=True)
-    total_time = db.Column(db.Float)
-    daily_average = db.Column(db.Float)
+    daily_average = db.Column(db.Interval)
+    total_time = db.Column(db.Interval)
+
+    @classmethod
+    def new_entry_update(cls, summary):
+        totaltimes = [x.totaltime for x in summary.entries]
+        total = sum(totaltimes, timedelta())
+        average = total / len(totaltimes)
+        summary.total_time = total
+        summary.daily_average = average

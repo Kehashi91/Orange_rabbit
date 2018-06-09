@@ -4,15 +4,15 @@ import matplotlib.style as mplstyle
 from datetime import timedelta, datetime
 from ..models import Timer_entries
 
-def plot(days = 30):
+def plot(user_id, days = 30):
     mplstyle.use(['ggplot'])
 
     days_range = datetime.today() - timedelta(days=days)
 
-    dbcheck = Timer.query.filter(Timer.entry_starttime > days_range).all()
+    dbcheck = Timer_entries.query.filter(Timer_entries.starttime > days_range).all()
 
-    dates = [matplotlib.dates.date2num(dbentry.entry_starttime.replace(second=0, minute=0, hour=0)) for dbentry in dbcheck]
-    times = [dbentry.entry_totaltime.total_seconds() / 60 for dbentry in dbcheck] #seconds -> minutes
+    dates = [matplotlib.dates.date2num(dbentry.starttime.replace(second=0, minute=0, hour=0)) for dbentry in dbcheck]
+    times = [dbentry.totaltime.total_seconds() / 60 for dbentry in dbcheck] #seconds -> minutes
 
     days_x_format = matplotlib.dates.DayLocator(interval=5)
     hours_x_format = matplotlib.dates.DayLocator()
@@ -26,7 +26,9 @@ def plot(days = 30):
     ax.xaxis.set_major_locator(days_x_format)
     ax.xaxis.set_major_formatter(daysFmt_x_format)
     ax.xaxis.set_minor_locator(hours_x_format)
+    ax.set_xlim(left=days_range)
 
     ax.grid(True)
 
-    ploter.savefig("nice.png")
+    ploter.savefig("app/static/static-{}-{}.png".format(user_id, days))
+    #  ploter.savefig("static/plot-{}.png".format(user_id))

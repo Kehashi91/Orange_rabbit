@@ -5,8 +5,9 @@ from datetime import datetime, timedelta, date
 from sqlalchemy import extract
 from . import timer
 from .. import db
-from ..models import Timer_entries
+from ..models import Timer_entries, Timer_summary
 from ..plot import ploter
+import os.path
 
 
 @timer.route('/v0.1/posttime', methods=["POST"])
@@ -49,13 +50,6 @@ def get_time():
 
     return str(totaltime), 201
 
-@timer.route('/v0.1/getgraph', methods=["GET"])
-def get_graph():
-    ploter.plot()
-    return "yiis", 201
-
-
-
 @timer.route('/v0.1/runtime_test', methods=["GET", "POST"])
 def runtime_test():
     if not request.json or not "test_data" in request.json:
@@ -63,15 +57,14 @@ def runtime_test():
     else:
         return "", 201
 
-
-"""
-    dbcheck = Timer.query.filter(extract('day', Timer.entry_starttime) == starttime.day).first()
-
-    if dbcheck:
-        dbentrytime = dbcheck.entry_totaltime + delta
-        dbcheck.entry_totaltime = dbentrytime
+@timer.route('/summary')
+def summary():
+    user_id = request.args.get('user_id', type=int)
+    if user_id:
+        summary = Timer_summary.query.filter_by(id=user_id).first_or_404()
+        ploter.plot(user_id)
+        return render_template("timer_summary.html", summary=summary, chart="static-{}-30.png".format(user_id))
     else:
-        starttimedb = Timer(entry_starttime=starttime, entry_totaltime=delta)
-        db.session.add(starttimedb)
+        abort(404)
 
-"""
+
