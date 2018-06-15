@@ -1,10 +1,8 @@
 Flask project for my personal website.
 
 
-This commit is first "semi stable" one, that has most basic functionalities figured out and properly tested. Also added
-docstrings to all files.
+Moving on to tidy everything up, make tests, and deploy as sort of a "MVP", and build further on that
 
 TODO:
-- logging
-- tidy up frontend
+- testing
 - actual content

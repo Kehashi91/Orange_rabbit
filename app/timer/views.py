@@ -1,13 +1,12 @@
 """Routes and view functions for timer app and API"""
 
+from datetime import datetime, timedelta
+
 from flask import request, jsonify, abort, render_template
-from datetime import datetime, timedelta, date
-from sqlalchemy import extract
+
+from app.timer import ploter
 from . import timer
-from .. import db
 from ..models import Timer_entries, Timer_summary
-from ..plot import ploter
-import os.path
 
 
 @timer.route('/v0.1/posttime', methods=["POST"])
@@ -23,7 +22,7 @@ def post_time():
     totaltime_todatetime = datetime.strptime(totaltime, "%H:%M:%S.%f")
     delta = timedelta(hours=totaltime_todatetime.hour, minutes=totaltime_todatetime.minute, seconds=totaltime_todatetime.second)
 
-    Timer_entries.entry_starttime_setter(starttime, delta)
+    Timer_entries.entry_setter(starttime, delta) #Database insert handled by model-specific classmethods
 
     timer_data_point = {
         "start_time": request.json["start_time"],
@@ -63,7 +62,7 @@ def summary():
     if user_id:
         summary = Timer_summary.query.filter_by(id=user_id).first_or_404()
         ploter.plot(user_id)
-        return render_template("timer_summary.html", summary=summary, chart="static-{}-30.png".format(user_id))
+        return render_template("timer_summary.html", summary=summary, chart="chart-{}-30.png".format(user_id))
     else:
         abort(404)
 

@@ -1,8 +1,12 @@
+"""Matplotlib related functions."""
+
 import matplotlib.pyplot as ploter
 import matplotlib.dates
 import matplotlib.style as mplstyle
+
 from datetime import timedelta, datetime
-from ..models import Timer_entries
+
+from app.models import Timer_entries
 
 def plot(user_id, days = 30):
     mplstyle.use(['ggplot'])
@@ -30,5 +34,4 @@ def plot(user_id, days = 30):
 
     ax.grid(True)
 
-    ploter.savefig("app/static/static-{}-{}.png".format(user_id, days))
-    #  ploter.savefig("static/plot-{}.png".format(user_id))
+    ploter.savefig("app/static/chart-{}-{}.png".format(user_id, days))

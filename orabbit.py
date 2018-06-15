@@ -7,21 +7,27 @@ Application structure:
 -> requirements.txt - Lists all packages and dependencies
 -> migrations - Flask-migrate directory
 -> env - venv directory
- ---> app - Main app directory
-   -> __init__ - App initialization 
-   -> models - Database models and definitions
+---> app - Main app directory
+    -> __init__ - App initialization 
+    -> models - Database models and definitions
     ---> static - Static files directory
     ---> templates - Templates directory
     ---> blogfolio - blogfolio blueprint directory
-      -> __init__ - Blueprint initialization
-      -> views.py - view functions
+    -> __init__ - Blueprint initialization
+    -> views.py - view functions
+    ---> timer - blogfolio blueprint directory
+    -> __init__ - Blueprint initialization
+    -> views.py - view functions and simple API calls
 """
 
 import os
+
 from flask import render_template
+from flask_migrate import Migrate
+
 from app import instantiate_app, db
 from app.models import Post, Tags
-from flask_migrate import Migrate
+
 
 app = instantiate_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
@@ -44,7 +50,7 @@ def test():
 
 @app.cli.command()
 def add_record():
-    """Convenience method for adding/modyfing database entries durgin development"""
+    """Convenience method for adding/modyfing database entries during development"""
     db.create_all()
 
 @app.errorhandler(404)

@@ -1,14 +1,16 @@
-"""Routes and view functions for Blog and portfolio"""
+"""Routes and view functions for Blog and portfolio
+
+TODO: Once I have 5+ projects, add pagination to index."""
 
 from flask import render_template, request, abort
 from flask_sqlalchemy import Pagination
 from sqlalchemy import or_, func
 from . import blogfolio
-from .. import db
 from ..models import Post, Tags
 
 @blogfolio.route('/')
 def index():
+    """Home page, lists all projects"""
     projects = Post.query.filter_by(post_type="project").all()
     return render_template("index.html", projects=projects)
 
@@ -25,6 +27,7 @@ def show_project(project):
 
 @blogfolio.route('/blog')
 def blog():
+    """Blog site with default pagination"""
     page = request.args.get('page', 1, type=int)
     posts = Post.query.filter_by(post_type="blogpost").paginate(page, 5, True)
     tags = Tags.query.all()
@@ -35,6 +38,7 @@ def blog():
 
 @blogfolio.route('/search')
 def search():
+    """Simple search by text and tags."""
     page = request.args.get('page', 1, type=int)
     search_query = request.args.get('query')
 
