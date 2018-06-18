@@ -22,7 +22,7 @@ def post_time():
     totaltime_todatetime = datetime.strptime(totaltime, "%H:%M:%S.%f")
     delta = timedelta(hours=totaltime_todatetime.hour, minutes=totaltime_todatetime.minute, seconds=totaltime_todatetime.second)
 
-    Timer_entries.entry_setter(starttime, delta) #Database insert handled by model-specific classmethods
+    Timer_entries.entry_setter(starttime, delta) #Database insert handled by model-specific class methods
 
     timer_data_point = {
         "start_time": request.json["start_time"],
