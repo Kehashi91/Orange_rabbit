@@ -137,10 +137,23 @@ class TimerTestCase(unittest.TestCase):
     """Tests proper Timer creation and functionalities."""
     @staticmethod
     def dbsetup():
-        """Seperate function just for the creation of test DB entries"""
-        test_user = Timer_summary(username="main")
-        test_timer_entry_1 = Timer_entries()
+        """Seperate function just for the creation of test DB entries.
+        While normally there are no direct inserts to the database, as the are handled by they respective setter methods,
+        we cannot use them at the setup phase, since they need to be tested as well. If they fail at setup stage, returned
+        exceptions will be quite unreadable and as such, it would deafeat the purpose of testing."""
+
+        test_user = Timer_summary(username="test")
         db.session.add(test_user)
+        db.session.commit()
+        test_timer_entry_1 = Timer_entries(starttime=datetime(2018, 1, 1, 00, 00, 00, 5), totaltime=timedelta(
+            hours=1, microseconds=1), username=test_user.id)
+        test_timer_entry_2 = Timer_entries(starttime=datetime(2018, 4, 4, 5, 10, 10, 5), totaltime=timedelta(
+            minutes=30, microseconds=0), username=test_user.id)
+        test_timer_entry_3 = Timer_entries(starttime=datetime(2018, 5, 30, 10, 10, 10, 0), totaltime=timedelta(
+            hours=2, microseconds=10), username=test_user.id)
+        db.session.add(test_timer_entry_1)
+        db.session.add(test_timer_entry_2)
+        db.session.add(test_timer_entry_3)
         db.session.commit()
 
 
@@ -168,14 +181,16 @@ class TimerTestCase(unittest.TestCase):
 
     def test_post_data(self):
         starttime = datetime(2018, 1, 1, 00, 00, 00, 5)
-        totaltime = timedelta(hours=1, microseconds=1)
-        data_to_json = json.dumps({"start_time": str(starttime), "work_time": str(totaltime)})
+        totaltime = timedelta(hours=11, microseconds=1)
+        data_to_json = json.dumps({"username": "test", "starttime": str(starttime), "worktime": str(totaltime)})
         response = self.app.post('/timer/v0.1/posttime', data=data_to_json, content_type='application/json')
 
         expected_response =  {'timer_data_point':
             {
-        "start_time": str(starttime),
-        "work_time": str(totaltime)
+                "success": "true",
+                "username": "test",
+                "starttime": str(starttime),
+                "worktime": str(totaltime)
             }
         }
 
@@ -183,7 +198,30 @@ class TimerTestCase(unittest.TestCase):
         self.assertEqual(json.loads(response.data), expected_response)
 
     def test_get_data(self):
-        response = self.app.get('/timer/v0.1/gettime')
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data.decode("utf-8"), '0:00:00')
+        response_base = self.app.get('/timer/v0.1/gettime')
+        response_test_user = self.app.get('/timer/v0.1/gettime', query_string={'username': 'test'})
+
+        expected_response_base =  {
+                "username": "main",
+                "totaltime": '3:30:00.000011'
+        }
+
+        expected_response_test_user =  {
+                "username": "test",
+                "totaltime": '3:30:00.000011'
+        }
+
+
+        self.assertEqual(response_base.status_code, 200)
+        self.assertEqual(json.loads(response_base.data), expected_response_base)
+        self.assertEqual(response_test_user.status_code, 200)
+        self.assertEqual(json.loads(response_test_user.data), expected_response_test_user)
+
+    def test_summary(self):
+        response_basic = self.app.get('/timer/summary', query_string={'username': 'test'})
+        response_no_user = self.app.get('/timer/summary')
+        response_bad_user = self.app.get('/timer/summary', query_string={'username': 'not_exists'})
+        self.assertEqual(response_basic.status_code, 200)
+        self.assertEqual(response_no_user.status_code, 400)
+        self.assertEqual(response_bad_user.status_code, 404)
 

@@ -11,22 +11,25 @@ from ..models import Timer_entries, Timer_summary
 
 @timer.route('/v0.1/posttime', methods=["POST"])
 def post_time():
-    if not request.json or not "work_time" in request.json or not "start_time" in request.json:
+    if not request.json or not "worktime" in request.json or not "starttime" in request.json:
         abort(400)
 
-    starttime = request.json["start_time"]
-    totaltime = request.json["work_time"]
+    username = request.json["username"]
+    starttime = request.json["starttime"]
+    totaltime = request.json["worktime"]
 
-    starttime = datetime.strptime(starttime, "%Y-%m-%d %H:%M:%S.%f").replace(microsecond=0)
+    starttime = datetime.strptime(starttime, "%Y-%m-%d %H:%M:%S.%f")
 
     totaltime_todatetime = datetime.strptime(totaltime, "%H:%M:%S.%f")
     delta = timedelta(hours=totaltime_todatetime.hour, minutes=totaltime_todatetime.minute, seconds=totaltime_todatetime.second)
 
-    Timer_entries.entry_setter(starttime, delta) #Database insert handled by model-specific class methods
+    Timer_entries.entry_setter(starttime, delta, username) #Database insert handled by model-specific class methods
 
     timer_data_point = {
-        "start_time": request.json["start_time"],
-        "work_time": request.json["work_time"]
+        "success": "true",
+        "username": request.json["username"],
+        "starttime": request.json["starttime"],
+        "worktime": request.json["worktime"]
     }
 
     return jsonify({'timer_data_point': timer_data_point}), 201
@@ -35,22 +38,24 @@ def post_time():
 def get_time():
 
     days_range = request.args.get('days', None, type=int)
+    username = request.args.get('username', "main", type=str)
 
     totaltime = timedelta()
 
     if days_range:
         yesterday = datetime.today() - timedelta(days=days_range)
-        all_times = Timer_entries.query.filter(yesterday < Timer_entries.entry_starttime).all()
+        all_times = Timer_entries.query.filter(yesterday < Timer_entries.starttime).all()
     else:
         all_times = Timer_entries.query.all()
 
     for time in all_times:
-        totaltime += time.entry_totaltime
+        totaltime += time.totaltime
 
-    return str(totaltime), 201
+    return jsonify({"username": username, "totaltime": str(totaltime)}), 200
 
 @timer.route('/v0.1/runtime_test', methods=["GET", "POST"])
 def runtime_test():
+    "Simple test method for timer script to execute at runtime."
     if not request.json or not "test_data" in request.json:
         abort(400)
     else:
@@ -58,12 +63,12 @@ def runtime_test():
 
 @timer.route('/summary')
 def summary():
-    user_id = request.args.get('user_id', type=int)
-    if user_id:
-        summary = Timer_summary.query.filter_by(id=user_id).first_or_404()
-        ploter.plot(user_id)
-        return render_template("timer_summary.html", summary=summary, chart="chart-{}-30.png".format(user_id))
+    username = request.args.get('username', type=str)
+    if username:
+        summary = Timer_summary.query.filter_by(username=username).first_or_404()
+        ploter.plot(summary.username)
+        return render_template("timer_summary.html", summary=summary, chart="chart-{}-30.png".format(username)), 200
     else:
-        abort(404)
+        abort(400)
 
 

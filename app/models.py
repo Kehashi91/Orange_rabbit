@@ -61,7 +61,7 @@ class Timer_entries(db.Model):
     totaltime = db.Column(db.Interval, nullable=False)
 
     @classmethod
-    def entry_setter(cls, starttime, totaltime, username="main"):
+    def entry_setter(cls, starttime, totaltime, username):
         """This function verifies if we have existing entry for current day, if yes, it merely updates it, otherwise
         it creates a new entry. It calls a Timer_summary.new_entry_update specific function to further propagate 
         the update. These functions are kept separate as the manipulate models that coresponds to them."""

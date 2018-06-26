@@ -8,7 +8,12 @@ from datetime import timedelta, datetime
 
 from app.models import Timer_entries
 
-def plot(user_id, days = 30):
+def plot(username, days = 30):
+    """Plots totaltime specified amount of days ago.
+    File is saved with username, not ID since same ID can exists in both testing and production enviroment, and could 
+    create unecessary overwrites. While for now plot is redrawn at every request, in the future it might change.
+    """
+
     mplstyle.use(['ggplot'])
 
     days_range = datetime.today() - timedelta(days=days)
@@ -34,4 +39,4 @@ def plot(user_id, days = 30):
 
     ax.grid(True)
 
-    ploter.savefig("app/static/chart-{}-{}.png".format(user_id, days))
+    ploter.savefig("app/static/chart-{}-{}.png".format(username, days))
