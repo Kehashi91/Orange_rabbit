@@ -13,12 +13,11 @@ def plot(username, days = 30):
     File is saved with username, not ID since same ID can exists in both testing and production enviroment, and could 
     create unecessary overwrites. While for now plot is redrawn at every request, in the future it might change.
     """
-
     mplstyle.use(['ggplot'])
 
     days_range = datetime.today() - timedelta(days=days)
 
-    dbcheck = Timer_entries.query.filter(Timer_entries.starttime > days_range).all()
+    dbcheck = Timer_entries.query.filter(Timer_entries.starttime > days_range).all()#add search by user after users are implemented
 
     dates = [matplotlib.dates.date2num(dbentry.starttime.replace(second=0, minute=0, hour=0)) for dbentry in dbcheck]
     times = [dbentry.totaltime.total_seconds() / 60 for dbentry in dbcheck] #seconds -> minutes

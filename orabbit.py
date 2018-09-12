@@ -15,7 +15,7 @@ Application structure:
     ---> blogfolio - blogfolio blueprint directory
     -> __init__ - Blueprint initialization
     -> views.py - view functions
-    ---> timer - blogfolio blueprint directory
+    ---> timer - timer blueprint directory
     -> __init__ - Blueprint initialization
     -> views.py - view functions and simple API calls
 """

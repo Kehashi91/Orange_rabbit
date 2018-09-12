@@ -27,20 +27,21 @@ def show_project(project):
 
 @blogfolio.route('/blog')
 def blog():
-    """Blog site with default pagination"""
+    """Blog site with default pagination. Projects included with a special tag."""
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.filter_by(post_type="blogpost").paginate(page, 5, True)
+    posts = Post.query.paginate(page, 5, True)
     tags = Tags.query.all()
     tags_half_1 = tags[int(len(tags)/2):]
     tags_half_2 = tags[:int(len(tags)/2)]
 
-    return render_template("blog.html", posts=posts, tags1=tags_half_1, tags2=tags_half_2)
+    return render_template("blog.html", posts=posts, tags1=tags_half_1, tags2=tags_half_2, paginate_url="blog?")
 
 @blogfolio.route('/search')
 def search():
     """Simple search by text and tags."""
-    page = request.args.get('page', 1, type=int)
     search_query = request.args.get('query')
+    page = request.args.get('page', 1, type=int)
+
 
     if not search_query:
         abort(404)
@@ -50,4 +51,5 @@ def search():
         results_count = results.count()
         results_paginate = results.paginate(page, 5, True)
 
-        return render_template("search.html", query=search_query, results=results_paginate, count=results_count)
+        return render_template("search.html", query=search_query, results=results_paginate, count=results_count,
+                               paginate_url="search?query=test&")

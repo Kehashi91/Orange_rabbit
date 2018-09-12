@@ -10,7 +10,7 @@
                          <div class="d-flex flex-row flex-wrap justify-content-between">
                              <div>
                          {% for tag in project.tags %}
-                        <span class="badge amber darken-2 m-2">{{ tag.name }}</span>
+                        <a href="search?query={{ tag.name }}"><span class="badge amber darken-2 m-2">{{ tag.name }}</span></a>
                          {% endfor %}
                              </div>
                              <span class="badge amber darken-2 m-2">Dodano: {{ project.time_added }}</span>

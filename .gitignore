@@ -2,4 +2,6 @@
 *.xml
 *.iml
 *.png
-
+**/static/font
+**/static/media
+**/env

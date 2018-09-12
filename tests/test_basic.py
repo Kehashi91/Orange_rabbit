@@ -1,11 +1,14 @@
 import unittest
 import requests
 import json
-from datetime import datetime, timedelta
+import os
 
+from datetime import datetime, timedelta
 from flask import current_app
+
 from app import instantiate_app, db
 from app.models import Post, Tags, Timer_entries, Timer_summary
+from app.timer import ploter
 
 class AppBasicTestCase(unittest.TestCase):
     """Tests basic app creation"""
@@ -40,17 +43,16 @@ class BlogfolioTestCase(unittest.TestCase):
         """Seperate function just for the creation of test DB entries"""
         test_tag_1 = Tags(name="test_tag_1")
         test_tag_2 = Tags(name="test_tag_2")
-        test_post_1 = Post(name="test post 1", description="",
-                           description_body="", image="",
-                           post_type="project")
+        test_post_1 = Post(name="test post 1", description="", description_body="", image="",post_type="project")
+        # First test post is project post
 
         db.session.add(test_tag_1)
         db.session.add(test_tag_2)
         db.session.add(test_post_1)
         db.session.commit()
 
-        for current_iteration in range(1, 10):
-            test_pagination_post = Post(name="test post {}".format(current_iteration), description="",
+        for x in range(2, 10): # other post are blogposts
+            test_pagination_post = Post(name="test post {}".format(x), description="",
                                         description_body="", image="",
                                         post_type="blogpost")
             db.session.add(test_pagination_post)
@@ -174,14 +176,25 @@ class TimerTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
+    @staticmethod
+    def remove_temp_file(path):
+        plot_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'app/static/{}'.format(path)))
+        if os.path.exists(plot_path):
+            os.remove(plot_path)
+
     def test_runtime_test(self):
         data_to_json = json.dumps({"test_data": "test data"})
         response = self.app.post('/timer/v0.1/runtime_test', data=data_to_json, content_type='application/json')
         self.assertEqual(response.status_code, 201)
 
+    def test_db_methods(self):
+        pass
+        #Timer_entries.entry_setter(starttime=datetime(2018, 1, 2, 00, 00, 00, 5), totaltime=timedelta(
+         #   hours=1, microseconds=1), username="test")
+
     def test_post_data(self):
         starttime = datetime(2018, 1, 1, 00, 00, 00, 5)
-        totaltime = timedelta(hours=11, microseconds=1)
+        totaltime = timedelta(hours=4, microseconds=1)
         data_to_json = json.dumps({"username": "test", "starttime": str(starttime), "worktime": str(totaltime)})
         response = self.app.post('/timer/v0.1/posttime', data=data_to_json, content_type='application/json')
 
@@ -224,4 +237,27 @@ class TimerTestCase(unittest.TestCase):
         self.assertEqual(response_basic.status_code, 200)
         self.assertEqual(response_no_user.status_code, 400)
         self.assertEqual(response_bad_user.status_code, 404)
+        TimerTestCase.remove_temp_file('chart-test-30.png')
+
+    def test_plot(self):
+
+        ploter.plot("test")
+        ploter.plot("test", 20)
+        ploter.plot("test", 120)
+
+        plot_path_1 = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'app/static/chart-test-30.png'))
+        plot_path_2 = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'app/static/chart-test-20.png'))
+        plot_path_3 = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'app/static/chart-test-120.png'))
+
+        self.assertTrue(os.path.isfile(plot_path_1))
+        self.assertTrue(os.path.isfile(plot_path_2))
+        self.assertTrue(os.path.isfile(plot_path_3))
+
+        TimerTestCase.remove_temp_file('chart-test-30.png')
+        TimerTestCase.remove_temp_file('chart-test-20.png')
+        TimerTestCase.remove_temp_file('chart-test-120.png')
+
+
+
+
 

@@ -1,8 +1,7 @@
 {% from "macros.html" import blogpost, paginate %}
 {% extends "layout.html" %}
 {% block main %}
-<div class="container pt-5 text-white justify-content-md-center">
-
+<div class="container pt-5 text-white justify-content-md-center fill">
       <div class="row">
 
         <!-- Blog Entries Column -->
@@ -16,12 +15,12 @@
 
 
 
-              <p>Znaleziono rekordów: {{ count }}</p>
+            <p>Znaleziono <b>{{ count }}</b> rekordów dla wyszukiwania: <b>{{ query }}</b></p>
                              {% for result in results.items %}
                {{ blogpost(result) }}
                {% endfor %}
 <!--Pagination-->
-          {{ paginate(results) }}
+          {{ paginate(results, paginate_url) }}
                 </div>
 
       </div>

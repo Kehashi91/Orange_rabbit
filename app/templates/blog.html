@@ -2,7 +2,7 @@
 {% from "macros.html" import blogpost, paginate %}
 {% block main %}
 
-<div class="container pt-5 text-white">
+<div class="container pt-5 text-white fill">
 
       <div class="row">
 
@@ -18,7 +18,7 @@
                {{ blogpost(post) }}
                {% endfor %}
 <!--Pagination-->
-          {{ paginate(posts) }}
+          {{ paginate(posts, paginate_url) }}
           <!-- Pagination -->
 
 
