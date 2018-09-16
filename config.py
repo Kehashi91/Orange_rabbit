@@ -5,9 +5,22 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
+
+    # base
+
+    WTF_CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or '4142141rsaasfd;o3w485a;o8hnp'
     DB_PASS = os.environ.get('DB_PASS')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # mail
+
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
     @staticmethod
     def init_app(app):

@@ -2,7 +2,7 @@
 {% from "macros.html" import portfoliopost %}
 {% block main %}
 
-      <main class="text-white mt-4 pt-3">
+<main class="text-white mt-4 pt-3" xmlns="http://www.w3.org/1999/html">
          <div id="intro" class="view mb-5">
             <div class="full-bg-img d-flex align-items-center justify-content-center">
             	
@@ -17,6 +17,23 @@
             </div>
          </div>
          <div class="container">
+
+                {% with messages = get_flashed_messages() %}
+
+      {% if messages %}
+
+        <ul>
+        {% for message in messages %}
+               <div class="alert alert-success text-center alert-dismissible fade show">{{ message }}
+             <button type="button" class="close" data-dismiss="alert" aria-label="Zamknij">
+    <span aria-hidden="true">&times;</span>
+                </div>
+  </button>
+        {% endfor %}
+        </ul>
+
+      {% endif %}
+    {% endwith %}
             <section id="strongpoints" class="text-center">
                <hr class="my-5">
                <div class="row">
@@ -49,22 +66,23 @@
             <section id="contact">
                <h3 class=" font-weight-bold text-center">Napisz do mnie</h3>
                <div class="row justify-content-center">
-                  <div class="col-lg-5 col-md-12">
-                     <form class="p-5">
+                  <div class="col-lg-5 col-md-12 white-text">
+                     <form action="" method="post" name="contact" class="p-5">
+                        {{ form.hidden_tag() }}
                         <div class="md-form form-sm">
-                           <i class="fa fa-user prefix grey-text"></i>
-                           <input type="text" id="form3" class="form-control">
-                           <label for="form3">Twoje imię</label>
+                           <i class="fa fa-user prefix orange-text"></i>
+                           {{ form.name(class="form-control white-text", id="form1") }}
+                           <label for="form1" class="text-white">Twoje imię</label>
                         </div>
                         <div class="md-form form-sm">
-                           <i class="fa fa-envelope prefix grey-text"></i>
-                           <input type="text" id="form2" class="form-control">
-                           <label for="form2">Twój mail</label>
+                           <i class="fa fa-envelope prefix orange-text"></i>
+                           {{ form.mail(class="form-control white-text", id="form2") }}
+                           <label for="form2" class="text-white">Twój mail</label>
                         </div>
                         <div class="md-form form-sm">
-                           <i class="fa fa-pencil prefix grey-text"></i>
-                           <textarea type="text" id="form8" class="md-textarea" style="height: 100px"></textarea>
-                           <label for="form8">Twoja wiadomość</label>
+                           <i class="fa fa-pencil prefix orange-text"></i>
+                           {{ form.msg(id="form3", class="md-textarea white-text", style="height: 120px") }}
+                           <label for="form3" class="text-white">Twoja wiadomość</label>
                         </div>
                         <div class="text-center">
                            <button class="btn orange darken-2">Wyślij <i class="fa fa-paper-plane-o ml-1"></i></button>

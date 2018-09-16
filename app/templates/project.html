@@ -5,7 +5,9 @@
          <div class="container text-center">
                                                    <h1 class="mb-3"><strong>{{ project.name }}</strong></h1>
 
+{% if project.image %}
                    <img src="static/{{ project.image }}" class="img-fluid z-depth-1 mywelcome mt-2" width="600" alt="1">
+             {% endif %}
              <hr class="my-3 orange">
                          <div class="d-flex flex-row flex-wrap justify-content-between">
                              <div>
@@ -18,9 +20,11 @@
 
 
              <strong>{{ project.description|safe }}</strong>
-             <div class="justify-content-center align-items-center">
+             {% if project.post_type == "project" %}
+             <div class="justify-content-center align-items-center mt-2">
                                   <a href="https://github.com/Kehashi91//{{ project.name }}" class="btn btn-primary btn-md waves-effect waves-light btn-orange m-1 ">Zobacz projekt na Githubie</a>
          </div>
+             {% endif %}
              <hr class="my-3 orange">
              {{ project.description_body|safe }}
                      <p>{{ project.time_added }}</p>

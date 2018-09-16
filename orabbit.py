@@ -21,11 +21,12 @@ Application structure:
 """
 
 import os
+import click
 
 from flask import render_template
 from flask_migrate import Migrate
 
-from app import instantiate_app, db
+from app import instantiate_app, db, mail
 from app.models import Post, Tags
 
 
@@ -35,7 +36,7 @@ migrate = Migrate(app, db)
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, Post=Post, Tags=Tags)
+    return dict(db=db, Post=Post, Tags=Tags, mail=mail)
 
 
 @app.cli.command()
@@ -49,10 +50,37 @@ def test():
         raise KeyError("Wrong app configuration: FLASK_CONFIG must be 'testing'")
 
 @app.cli.command()
-def add_record():
+def setup_db():
     """Convenience method for adding/modyfing database entries during development"""
     db.create_all()
 
+@app.cli.command()
+@click.option("--filename", default="input.csv", help="Filename of input csv file")
+def add_record(filename):
+    """Temporary method for adding records until I make a simple CMS."""
+
+    import csv
+    with open(filename, "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            kwargs = {key:value for (key, value) in row.items()}
+            db_insert = Post(**kwargs)
+            db.session.add(db_insert)
+            db.session.commit()
+"""
+
+    post_id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    description_body = db.Column(db.Text)
+    image = db.Column(db.Text, nullable=False)
+    time_added = db.Column(db.Date, nullable=False, default=date.today())
+    tags = db.relationship('Tags', secondary=metatags, lazy='subquery',
+        backref=db.backref('Post', lazy=True))
+    post_type = db.Column(db.Text, nullable=False)
+
+    db.create_all()
+"""
 @app.errorhandler(404)
 def page_not_found(e):
     """Errorhandlers needs to be implemented at app layer, not blueprint layer."""

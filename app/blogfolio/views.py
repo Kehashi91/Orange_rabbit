@@ -2,17 +2,33 @@
 
 TODO: Once I have 5+ projects, add pagination to index."""
 
-from flask import render_template, request, abort
+from flask import render_template, request, abort, redirect, flash
 from flask_sqlalchemy import Pagination
 from sqlalchemy import or_, func
 from . import blogfolio
 from ..models import Post, Tags
+from .forms import ContactForm
+from .mail import send_email
 
-@blogfolio.route('/')
+@blogfolio.route('/', methods=["GET", "POST"])
 def index():
     """Home page, lists all projects"""
+
+    form = ContactForm()
     projects = Post.query.filter_by(post_type="project").all()
-    return render_template("index.html", projects=projects)
+
+    if form.validate_on_submit():
+        flash("Dzieki za wiadomość, {}!".format(form.name.data))
+        subject = "Wiadaomość od {} - mail {}".format(form.name.data, form.mail.data)
+        send_email(subject, form.msg.data)
+        # write message to backup file in case mail won't work
+        with open("messages.txt", "a") as file:
+            file.write("\n".join([subject, form.msg.data]))
+
+        return redirect("/")
+
+
+    return render_template("index.html", projects=projects, form=form)
 
 @blogfolio.route('/<project>')
 def show_project(project):
