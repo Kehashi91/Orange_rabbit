@@ -30,7 +30,7 @@ from app import instantiate_app, db, mail
 from app.models import Post, Tags
 
 
-app = instantiate_app(os.getenv('FLASK_CONFIG') or 'default')
+app = instantiate_app(os.getenv('FLASK_ENV') or 'development')
 migrate = Migrate(app, db)
 
 
@@ -63,6 +63,7 @@ def add_record(filename):
     with open(filename, "r") as file:
         reader = csv.DictReader(file)
         for row in reader:
+            print (row)
             kwargs = {key:value for (key, value) in row.items()}
             db_insert = Post(**kwargs)
             db.session.add(db_insert)
@@ -81,6 +82,14 @@ def add_record(filename):
 
     db.create_all()
 """
+
+@app.cli.command()
+def db_command():
+    """Convenience method for adding/modyfing database entries during development"""
+    post = Post.query.filter_by(name="testowyinsert3").first()
+    post.image = "media/rest.png"
+    db.session.commit()
+
 @app.errorhandler(404)
 def page_not_found(e):
     """Errorhandlers needs to be implemented at app layer, not blueprint layer."""

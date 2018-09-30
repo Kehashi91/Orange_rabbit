@@ -1,12 +1,5 @@
-
-html,
-body,
-header,
 #intro {
     height: 80vh;
-}
-
-#intro {
     background: url("../media/pexels-photo-270623.png")no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
