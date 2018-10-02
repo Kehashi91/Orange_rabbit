@@ -55,39 +55,35 @@ def setup_db():
     db.create_all()
 
 @app.cli.command()
-@click.option("--filename", default="input.csv", help="Filename of input csv file")
-def add_record(filename):
+@click.option("--filename", default=None, help="Filename of input csv file")
+@click.option("--tags", default=None, help="List of tags to be added")
+def add_record(filename, tags):
     """Temporary method for adding records until I make a simple CMS."""
+    db.create_all()
 
-    import csv
-    with open(filename, "r") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            print (row)
-            kwargs = {key:value for (key, value) in row.items()}
-            db_insert = Post(**kwargs)
+    if tags:
+        for tag in tags.split(","):
+            db_insert = Tags(name=tag)
             db.session.add(db_insert)
             db.session.commit()
-"""
 
-    post_id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    description_body = db.Column(db.Text)
-    image = db.Column(db.Text, nullable=False)
-    time_added = db.Column(db.Date, nullable=False, default=date.today())
-    tags = db.relationship('Tags', secondary=metatags, lazy='subquery',
-        backref=db.backref('Post', lazy=True))
-    post_type = db.Column(db.Text, nullable=False)
-
-    db.create_all()
-"""
+    if filename:
+        import csv
+        with open(filename, "r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                print (row)
+                kwargs = {key:value for (key, value) in row.items()}
+                kwargs["tags"] = [Tags.query.filter_by(name=tag).first() for tag in kwargs["tags"].split(",")]
+                db_insert = Post(**kwargs)
+                db.session.add(db_insert)
+                db.session.commit()
 
 @app.cli.command()
 def db_command():
     """Convenience method for adding/modyfing database entries during development"""
-    post = Post.query.filter_by(name="testowyinsert3").first()
-    post.image = "media/rest.png"
+    post = Post.query.filter_by(name="dns-utils").first()
+    db.session.delete(post)
     db.session.commit()
 
 @app.errorhandler(404)

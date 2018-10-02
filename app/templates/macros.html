@@ -2,7 +2,7 @@
     <div class="row mywelcome elegant-color-dark p-3 m-3">
         {% if oddevenflag %}
  <div class="col-md-6">
-                   <img src="static/{{ project.image }}" class="img-fluid z-depth-1 mywelcome" alt="1">
+                   <img src="static/{{ project.image }}" class="img-fluid mywelcome" alt="{{ project.image }}">
                   </div>
         {% endif %}
                   <div class="col-md-6">
@@ -23,7 +23,7 @@
                   </div>
                 {% if not oddevenflag %}
  <div class="col-md-6">
-                   <img src="static/{{ project.image }}" class="img-fluid z-depth-1 mywelcome" alt="1">
+                   <img src="static/{{ project.image }}" class="img-fluid mywelcome" alt="{{ project.image }}">
                   </div>
         {% endif %}
                </div>
